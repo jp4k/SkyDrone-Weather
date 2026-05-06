@@ -1,0 +1,11 @@
+{
+  "name": "vento-weather-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static server and weather proxy for the Vento dashboard",
+  "scripts": {
+    "start": "node server-supervisor.js",
+    "start:server": "node server.js",
+    "test": "node server.test.js"
+  }
+}

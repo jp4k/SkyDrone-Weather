@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Clima + Drone</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-sA+QdS5YcoN49DJ30P+7V6k2Uz2UVjjACa6t7zV5pKA=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o9N1j6wQ2xU2ysGvY0VfP4lqcT0YUiGxU1CzLEa9Wj0=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet-velocity@1.15.0/dist/leaflet-velocity.min.js"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0b1220;
+    color: white;
+}
+
+/* ===== TABS ===== */
+.tabs {
+    display: flex;
+    background: #111827;
+    padding: 10px;
+}
+.tabs button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+.tabs button.active {
+    background: #1f2937;
+    border-radius: 8px;
+}
+
+/* ===== CONTEÚDO ===== */
+.content { display: none; padding: 20px; }
+.active { display: block; }
+
+/* ===== GRID ===== */
+.grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+}
+
+/* ===== CARD ESQUERDA ===== */
+.card {
+    background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    padding: 25px;
+    border-radius: 20px;
+}
+
+.card h2 {
+    margin: 0;
+}
+
+.temp {
+    font-size: 70px;
+    margin: 20px 0;
+}
+
+/* ===== DIREITA ===== */
+.panel {
+    background: #111827;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+/* ===== 7 DIAS ===== */
+.days {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+.day {
+    background: #1f2937;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    width: 90px;
+}
+
+/* ===== DRONE ===== */
+.drone-panel {
+    background: #111827;
+    padding: 20px;
+    border-radius: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TABS -->
+<div class="tabs">
+    <button class="active" onclick="trocarTab(event,'clima')">Clima</button>
+    <button onclick="trocarTab(event,'drone')">Drone</button>
+</div>
+
+<!-- CLIMA -->
+<div id="clima" class="content active">
+
+<div class="grid">
+
+    <!-- ESQUERDA -->
+    <div class="card">
+        <h2 id="cidade">Carregando...</h2>
+        <p id="data"></p>
+
+        <div class="temp" id="temp">--°C</div>
+
+        <p>💧 <span id="umidade"></span></p>
+        <p>💨 <span id="vento"></span></p>
+    </div>
+
+    <!-- DIREITA -->
+    <div>
+
+        <div class="panel">
+            <h3>Temperatura por Hora</h3>
+            <canvas id="grafico"></canvas>
+        </div>
+
+        <div class="panel">
+            <h3>Previsão para 7 Dias</h3>
+            <div class="days" id="dias"></div>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- DRONE -->
+<div id="drone" class="content">
+
+    <div class="drone-panel">
+        <h2>🛸 Drone Weather Pro</h2>
+        <p id="droneStatusText">Carregando informações de voo...</p>
+        <p>💨 Vento: <span id="ventoDrone">-- km/h</span></p>
+        <p>🌬 Rajada: <span id="rajadaDrone">-- km/h</span></p>
+        <p>👁 Visibilidade: <span id="visibilidadeDrone">-- km</span></p>
+        <p>🌧 Chuva (1h): <span id="chuvaDrone">-- mm</span></p>
+        <p>🛰 Kp: <span id="kpDrone">--</span></p>
+        <p>📡 Satélites: <span id="satelitesDrone">--</span></p>
+        <p id="zonaDroneText"></p>
+        <div id="droneAlert" class="drone-alert"></div>
+        <button id="btnAtualizarDrone" class="btn-update">Atualizar Drone</button>
+    </div>
+
+    <div class="drone-panel">
+        <h3>Mapa Interativo</h3>
+        <div id="droneMap" class="drone-map"></div>
+    </div>
+
+    <div class="drone-panel">
+        <h3>Gráfico de Vento (8h)</h3>
+        <canvas id="droneWindChart" class="drone-chart"></canvas>
+    </div>
+
+    <div class="drone-panel">
+        <h3>Forecast por Hora</h3>
+        <div id="droneHourlyForecast" class="drone-hourly"></div>
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+
+<!-- Instruções para empacotar como APK -->
+<!--
+npm install @capacitor/core @capacitor/cli
+npx cap init
+npx cap add android
+-->
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Map</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* CSS styles here */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map {
+      width: 100%;
+      height: 80%;
+      background-color: #f2f2f2;
+    }
+
+    .controls {
+      width: 100%;
+      height: 20%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .control {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="map"></div>
+    <div class="controls">
+      <div class="control">Temperatura</div>
+      <div class="control">Vento</div>
+      <div class="control">Precipitação</div>
+      <div class="control">Nuvens</div>
+    </div>
+  </div>
+</body>
+</html>
+/*************  ✨ Windsurf Command ⭐  *************/
+<script>
+  // JavaScript code here
+</script>
+/*******  b21548e5-590a-409f-846e-1e2436bc97c2  *******/
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vento Ultra Pro</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<div class="tabs">
+  <button class="active" onclick="showTab('clima')">🌦 Clima</button>
+  <button onclick="showTab('drone')">🚁 Drone</button>
+</div>
+
+<div id="clima" class="content active">
+  <div class="grid">
+
+    <div class="card">
+      <h2 id="cidade">Carregando...</h2>
+      <p id="data"></p>
+      <h1 id="temp">--°C</h1>
+      <p id="vento">💨 -- km/h</p>
+    </div>
+
+    <div>
+      <div id="map"></div>
+
+      <div class="panel">
+        <h3>Temperatura</h3>
+        <canvas id="grafico"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="drone" class="content">
+  <div class="panel">
+    <h3>Painel do Drone</h3>
+    <p>Status: <span id="status">Conectando...</span></p>
+    <p>Bateria: <span id="bateria">--%</span></p>
+    <p>Altitude: <span id="altitude">-- m</span></p>
+    <p>Velocidade: <span id="velocidade">-- km/h</span></p>
+  </div>
+</div>
+
+<script src="wind.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

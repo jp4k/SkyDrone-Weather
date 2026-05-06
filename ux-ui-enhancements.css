@@ -1,0 +1,1115 @@
+:root {
+  --ux-bg: rgba(6, 12, 24, 0.78);
+  --ux-bg-strong: rgba(8, 15, 30, 0.94);
+  --ux-border: rgba(148, 163, 184, 0.22);
+  --ux-border-strong: rgba(56, 189, 248, 0.44);
+  --ux-text: #f8fafc;
+  --ux-muted: #94a3b8;
+  --ux-soft: #cbd5e1;
+  --ux-blue: #2563eb;
+  --ux-cyan: #38bdf8;
+  --ux-green: #22c55e;
+  --ux-yellow: #f59e0b;
+  --ux-red: #ef4444;
+  --ux-shadow: 0 18px 46px rgba(2, 6, 23, 0.34);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+.climate-action-btn,
+.layer-btn,
+.weather-layer-btn,
+.chart-mode-btn,
+.chart-range-btn,
+.satellite-btn {
+  position: relative;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+button:focus-visible,
+.climate-action-btn:focus-visible,
+.layer-btn:focus-visible,
+.weather-layer-btn:focus-visible,
+.chart-mode-btn:focus-visible,
+.chart-range-btn:focus-visible,
+.satellite-btn:focus-visible,
+.ux-icon-btn:focus-visible,
+.ux-bottom-nav button:focus-visible,
+.ux-layer-toggle:focus-visible {
+  outline: 2px solid var(--ux-cyan);
+  outline-offset: 2px;
+}
+
+.ux-ripple {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.34);
+  transform: translate(-50%, -50%) scale(1);
+  animation: ux-ripple 520ms ease-out forwards;
+}
+
+@keyframes ux-ripple {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(18);
+  }
+}
+
+.loading-overlay {
+  background:
+    linear-gradient(110deg, rgba(8, 15, 30, 0.96), rgba(15, 23, 42, 0.92), rgba(8, 15, 30, 0.96));
+}
+
+.loading-spinner {
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.22);
+}
+
+.loading-text::after {
+  content: '';
+  display: block;
+  width: min(280px, 72vw);
+  height: 10px;
+  margin: 18px auto 0;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(148, 163, 184, 0.12), rgba(255, 255, 255, 0.28), rgba(148, 163, 184, 0.12));
+  background-size: 220% 100%;
+  animation: ux-shimmer 1.25s linear infinite;
+}
+
+@keyframes ux-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  backdrop-filter: blur(18px);
+}
+
+.tabs button {
+  min-height: 44px;
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+}
+
+.content {
+  animation: ux-tab-in 220ms ease both;
+}
+
+@keyframes ux-tab-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#clima .climate-top-grid {
+  grid-template-columns: minmax(330px, 400px) minmax(0, 1fr);
+}
+
+#clima .climate-left-column {
+  position: sticky;
+  top: 82px;
+  max-height: calc(100vh - 98px);
+  overflow: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+}
+
+#clima .panel,
+#clima .card,
+.flight-status-panel,
+.location-card,
+.analysis-card,
+.recommendations-card,
+.weather-metric-card,
+.satellite-floating-card,
+.satellite-panel,
+.satellite-map-card {
+  border-radius: 8px;
+}
+
+#clima .climate-command-panel,
+#clima .climate-overview-panel,
+#clima .climate-chart-panel,
+#clima .climate-map-panel-advanced {
+  border: 1px solid rgba(96, 165, 250, 0.18);
+}
+
+#clima .climate-map-panel-advanced {
+  padding: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(7, 13, 26, 0.94), rgba(11, 18, 32, 0.98));
+}
+
+#clima .climate-map-panel-advanced > .panel-header-line,
+#clima .climate-map-panel-advanced > .climate-map-toolbar,
+#clima .climate-map-panel-advanced > .map-control-strip,
+#clima .climate-map-panel-advanced > .map-note {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+#clima .climate-map-panel-advanced > .panel-header-line {
+  padding-top: 18px;
+}
+
+#clima .climate-map-panel-advanced > .map-note {
+  padding-bottom: 18px;
+}
+
+.map-viewport-shell {
+  position: relative;
+  min-height: 620px;
+  isolation: isolate;
+  background: #07111f;
+}
+
+#clima #map {
+  height: min(72vh, 760px);
+  min-height: 620px;
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.map-viewport-shell .leaflet-control-zoom a {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  color: #e2e8f0;
+  background: rgba(8, 15, 30, 0.84);
+  border-color: rgba(148, 163, 184, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+.map-viewport-shell .leaflet-control-scale-line {
+  color: #f8fafc;
+  background: rgba(8, 15, 30, 0.78);
+  border-color: rgba(226, 232, 240, 0.8);
+  text-shadow: none;
+}
+
+.map-ux-hud,
+.mission-dashboard,
+.ux-map-context-menu,
+.ux-quick-guide,
+.mission-bottom-sheet,
+.ux-layer-bank {
+  color: var(--ux-text);
+  border: 1px solid var(--ux-border);
+  background: var(--ux-bg);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--ux-shadow);
+}
+
+.map-ux-hud {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 520;
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  max-width: calc(100% - 28px);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.ux-hud-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(118px, 1fr));
+  gap: 8px;
+}
+
+.ux-hud-item,
+.ux-dashboard-metric,
+.ux-weather-card,
+.ux-sheet-card,
+.ux-source-card,
+.ux-mini-stat {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(15, 23, 42, 0.66);
+  border-radius: 8px;
+}
+
+.ux-hud-item {
+  min-height: 50px;
+  padding: 8px 10px;
+}
+
+.ux-hud-label,
+.ux-dashboard-label,
+.ux-source-label,
+.ux-mini-label,
+.ux-sheet-kicker {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ux-muted);
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.ux-hud-value,
+.ux-dashboard-value,
+.ux-source-value,
+.ux-mini-value {
+  color: var(--ux-text);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.ux-hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ux-icon-btn,
+.ux-layer-toggle,
+.ux-context-action,
+.ux-guide-action,
+.ux-mode-toggle {
+  min-height: 40px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.78);
+  color: var(--ux-soft);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.ux-icon-btn {
+  width: 40px;
+  padding: 0;
+}
+
+.ux-icon-btn:hover,
+.ux-layer-toggle:hover,
+.ux-context-action:hover,
+.ux-guide-action:hover,
+.ux-mode-toggle:hover {
+  transform: translateY(-1px);
+  border-color: var(--ux-border-strong);
+  color: #fff;
+}
+
+.ux-icon-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+  transform: none;
+}
+
+.mission-dashboard {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 520;
+  width: min(380px, calc(100% - 28px));
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.ux-dashboard-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ux-dashboard-title {
+  margin: 0;
+  color: var(--ux-text);
+  font-size: 15px;
+}
+
+.ux-dashboard-subtitle {
+  display: block;
+  margin-top: 3px;
+  color: var(--ux-muted);
+  font-size: 12px;
+}
+
+.ux-flight-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #dcfce7;
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ux-flight-chip::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ux-green);
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.14);
+}
+
+.ux-flight-chip.warning {
+  color: #fef3c7;
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.32);
+}
+
+.ux-flight-chip.warning::before {
+  background: var(--ux-yellow);
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.14);
+}
+
+.ux-flight-chip.danger {
+  color: #fee2e2;
+  background: rgba(239, 68, 68, 0.16);
+  border-color: rgba(239, 68, 68, 0.34);
+}
+
+.ux-flight-chip.danger::before {
+  background: var(--ux-red);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.14);
+}
+
+.ux-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ux-dashboard-metric {
+  min-height: 72px;
+  padding: 10px;
+}
+
+.ux-dashboard-meter {
+  height: 6px;
+  margin-top: 9px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(148, 163, 184, 0.18);
+}
+
+.ux-dashboard-meter span {
+  display: block;
+  width: var(--value, 0%);
+  height: 100%;
+  background: linear-gradient(90deg, var(--ux-red), var(--ux-yellow), var(--ux-green));
+  transition: width 380ms ease;
+}
+
+.ux-layer-bank {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 520;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: min(640px, calc(100% - 28px));
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.ux-layer-toggle {
+  min-height: 38px;
+  padding: 8px 11px;
+}
+
+.ux-layer-toggle.is-active {
+  color: #fff;
+  border-color: rgba(56, 189, 248, 0.52);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.62), rgba(14, 165, 233, 0.34));
+}
+
+.ux-map-context-menu {
+  position: absolute;
+  z-index: 700;
+  display: none;
+  min-width: 210px;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.ux-map-context-menu.is-open {
+  display: grid;
+  gap: 6px;
+  animation: ux-menu-in 140ms ease both;
+}
+
+@keyframes ux-menu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ux-context-action {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.ux-context-action.danger {
+  color: #fecaca;
+  border-color: rgba(239, 68, 68, 0.26);
+}
+
+.ux-context-kbd {
+  color: var(--ux-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ux-quick-guide {
+  position: absolute;
+  left: 50%;
+  bottom: 86px;
+  z-index: 560;
+  width: min(520px, calc(100% - 28px));
+  padding: 14px;
+  border-radius: 8px;
+  transform: translateX(-50%);
+}
+
+.ux-quick-guide.is-hidden {
+  display: none;
+}
+
+.ux-quick-guide h3 {
+  margin: 0 0 6px;
+  color: var(--ux-text);
+  font-size: 16px;
+}
+
+.ux-quick-guide p {
+  margin: 0 0 12px;
+  color: var(--ux-soft);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ux-guide-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ux-guide-pill {
+  padding: 7px 9px;
+  border-radius: 999px;
+  color: var(--ux-soft);
+  background: rgba(15, 23, 42, 0.68);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ux-guide-action {
+  margin-left: auto;
+  padding: 8px 12px;
+  color: #fff;
+  border-color: rgba(34, 197, 94, 0.38);
+  background: rgba(34, 197, 94, 0.18);
+}
+
+.mission-bottom-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1200;
+  display: none;
+  max-height: min(72vh, 620px);
+  padding: 8px 14px 92px;
+  border-radius: 16px 16px 0 0;
+  transform: translateY(calc(100% - 82px));
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mission-bottom-sheet.is-hidden,
+.ux-bottom-nav.is-hidden {
+  display: none !important;
+}
+
+.mission-bottom-sheet.is-expanded {
+  transform: translateY(0);
+}
+
+.ux-sheet-handle {
+  display: block;
+  width: 42px;
+  height: 5px;
+  margin: 3px auto 12px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(226, 232, 240, 0.5);
+  cursor: grab;
+}
+
+.ux-sheet-section {
+  display: none;
+  gap: 12px;
+}
+
+.ux-sheet-section.is-active {
+  display: grid;
+  animation: ux-tab-in 180ms ease both;
+}
+
+.ux-sheet-title {
+  margin: 0;
+  color: var(--ux-text);
+  font-size: 16px;
+}
+
+.ux-sheet-grid,
+.ux-weather-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ux-sheet-card,
+.ux-weather-card,
+.ux-source-card {
+  min-height: 86px;
+  padding: 12px;
+}
+
+.ux-sheet-card p,
+.ux-weather-card p,
+.ux-source-card p {
+  margin: 6px 0 0;
+  color: var(--ux-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.ux-bottom-nav {
+  position: fixed;
+  left: 10px;
+  right: 10px;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  z-index: 1300;
+  display: none;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  background: rgba(4, 10, 20, 0.92);
+  box-shadow: 0 18px 38px rgba(2, 6, 23, 0.46);
+  backdrop-filter: blur(18px);
+}
+
+.ux-bottom-nav button {
+  min-height: 52px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ux-muted);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ux-bottom-nav button::before {
+  content: attr(data-symbol);
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ux-soft);
+  font-size: 15px;
+}
+
+.ux-bottom-nav button.is-active {
+  color: #fff;
+  background: linear-gradient(180deg, rgba(37, 99, 235, 0.34), rgba(14, 165, 233, 0.16));
+}
+
+.ux-source-compare {
+  display: grid;
+  gap: 10px;
+}
+
+.ux-source-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ux-source-card.is-windy {
+  border-color: rgba(56, 189, 248, 0.28);
+}
+
+.ux-source-card.is-ventusky {
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.ux-confidence-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.62);
+}
+
+.ux-confidence-badge {
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #dcfce7;
+  background: rgba(34, 197, 94, 0.18);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ux-confidence-badge.medium {
+  color: #fef3c7;
+  background: rgba(245, 158, 11, 0.18);
+}
+
+.ux-confidence-badge.low {
+  color: #fee2e2;
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.ux-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ux-mini-stat {
+  min-height: 68px;
+  padding: 10px;
+}
+
+.ux-mode-group {
+  display: flex;
+  gap: 8px;
+}
+
+.ux-mode-toggle {
+  flex: 1;
+  padding: 9px 10px;
+}
+
+.ux-mode-toggle.is-active {
+  color: #fff;
+  border-color: rgba(56, 189, 248, 0.46);
+  background: rgba(37, 99, 235, 0.32);
+}
+
+.ux-toast-stack {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1600;
+  display: grid;
+  gap: 8px;
+  width: min(360px, calc(100vw - 36px));
+}
+
+.ux-toast {
+  padding: 12px 14px;
+  border: 1px solid var(--ux-border);
+  border-radius: 8px;
+  color: var(--ux-text);
+  background: var(--ux-bg-strong);
+  box-shadow: var(--ux-shadow);
+  animation: ux-toast-in 220ms ease both;
+}
+
+@keyframes ux-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ux-marker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: #fff;
+  background: #2563eb;
+  border: 2px solid #fff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.34);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.ux-marker.gcp {
+  background: #22c55e;
+}
+
+.ux-marker.photo {
+  background: #f59e0b;
+}
+
+.ux-marker.is-selected {
+  box-shadow: 0 0 0 5px rgba(56, 189, 248, 0.26), 0 10px 24px rgba(15, 23, 42, 0.38);
+}
+
+.ux-wind-arrow {
+  width: 26px;
+  height: 26px;
+  color: #dbeafe;
+  filter: drop-shadow(0 4px 8px rgba(2, 6, 23, 0.42));
+  animation: ux-wind-pulse 1.8s ease-in-out infinite;
+}
+
+.ux-wind-arrow::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  margin: 2px auto 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 22px solid rgba(56, 189, 248, 0.86);
+}
+
+@keyframes ux-wind-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.ux-grid-line {
+  stroke-dasharray: 6 8;
+}
+
+.ux-mission-line {
+  stroke-dasharray: 9 8;
+  animation: ux-line-draw 900ms ease both;
+}
+
+@keyframes ux-line-draw {
+  from {
+    stroke-dashoffset: 90;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ux-dragging-mission .map-viewport-shell {
+  cursor: move;
+}
+
+.ux-pro-mode .ux-quick-guide,
+.ux-pro-mode .ux-sheet-kicker {
+  display: none;
+}
+
+.drone-container {
+  max-width: 1720px;
+}
+
+#drone-map {
+  min-height: 300px;
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.flight-status-panel {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.analysis-card,
+.location-card,
+.recommendations-card,
+.weather-metric-card,
+.update-timestamp {
+  background: linear-gradient(180deg, rgba(12, 20, 36, 0.94), rgba(8, 13, 24, 0.96));
+  border-color: rgba(96, 165, 250, 0.16);
+  box-shadow: 0 20px 42px rgba(2, 6, 23, 0.28);
+}
+
+.analysis-item,
+.coord-box,
+.recommendation-item {
+  border-radius: 8px;
+}
+
+@media (max-width: 1400px) {
+  #clima .climate-left-column {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .mission-dashboard {
+    width: min(420px, calc(100% - 28px));
+  }
+}
+
+@media (max-width: 980px) {
+  .tabs {
+    overflow-x: auto;
+    flex-direction: row;
+    padding: 8px 10px;
+  }
+
+  .tabs button {
+    flex: 0 0 auto;
+    min-width: 116px;
+    padding: 10px 14px;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  #clima .climate-top-grid,
+  #clima .climate-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #clima .climate-right-column {
+    order: -1;
+  }
+
+  .map-viewport-shell {
+    min-height: calc(100dvh - 146px);
+  }
+
+  #clima #map {
+    height: calc(100dvh - 146px);
+    min-height: 540px;
+  }
+
+  .map-ux-hud {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    flex-direction: column;
+  }
+
+  .ux-hud-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ux-hud-actions {
+    justify-content: flex-end;
+  }
+
+  .mission-dashboard {
+    top: auto;
+    right: 10px;
+    bottom: 96px;
+    left: 10px;
+    width: auto;
+  }
+
+  .ux-dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ux-layer-bank {
+    display: none;
+  }
+
+  .ux-quick-guide {
+    bottom: 176px;
+  }
+
+  .mission-bottom-sheet,
+  .ux-bottom-nav {
+    display: grid;
+  }
+
+  .ux-toast-stack {
+    right: 12px;
+    bottom: 86px;
+  }
+
+  .weather-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #drone .drone-main-grid,
+  #drone .analysis-grid,
+  #drone .coords-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #drone-map {
+    height: 360px;
+  }
+}
+
+@media (max-width: 680px) {
+  body {
+    padding-bottom: 76px;
+  }
+
+  .content {
+    padding: 8px;
+  }
+
+  .tabs {
+    top: 0;
+  }
+
+  #clima .climate-shell {
+    gap: 14px;
+  }
+
+  #clima .climate-map-panel-advanced > .panel-header-line,
+  #clima .climate-map-panel-advanced > .climate-map-toolbar,
+  #clima .climate-map-panel-advanced > .map-control-strip,
+  #clima .climate-map-panel-advanced > .map-note {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .map-viewport-shell {
+    margin-left: -8px;
+    margin-right: -8px;
+    min-height: calc(100dvh - 130px);
+  }
+
+  #clima #map {
+    height: calc(100dvh - 130px);
+    min-height: 520px;
+  }
+
+  .ux-hud-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ux-hud-item {
+    min-height: 42px;
+    padding: 7px 9px;
+  }
+
+  .ux-hud-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .ux-icon-btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .mission-dashboard {
+    display: none;
+  }
+
+  .ux-sheet-grid,
+  .ux-weather-grid,
+  .ux-source-grid,
+  .ux-mini-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ux-bottom-nav {
+    left: 8px;
+    right: 8px;
+    gap: 4px;
+    padding: 7px;
+  }
+
+  .ux-bottom-nav button {
+    min-height: 54px;
+    font-size: 10px;
+  }
+
+  .ux-quick-guide {
+    display: none;
+  }
+
+  .flight-status-panel {
+    padding: 22px 16px;
+  }
+
+  .flight-status-panel .status-left {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .flight-status-panel .status-icon {
+    font-size: 54px;
+  }
+
+  .flight-status-panel .status-text h1 {
+    font-size: 28px;
+  }
+
+  .weather-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
